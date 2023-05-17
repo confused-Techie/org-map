@@ -1,0 +1,15 @@
+#map {
+  height: 50rem;
+  width: 100rem;
+  right: auto;
+  left: auto;
+  display: flex;
+  margin-left: 2rem;
+  margin-top: 2rem;
+}
+
+.card {
+  width: 100rem;
+  margin-top: 2rem;
+  margin-left: 2rem;
+}

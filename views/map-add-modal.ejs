@@ -1,0 +1,64 @@
+<!-- Modal -->
+<div class="modal fade" id="mapAddModal" tabindex="-1" role="dialog" aria-labelledby="mapAddModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="mapAddModalLabel">Add Map Item</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form id="mapAddModal.Form">
+      <div class="modal-body">
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="mapAddModal.itemName">Item's Name:</span>
+          </div>
+          <input type="text" class="form-control" placeholder="Camera 1" aria-label="itemName" aria-describedBy="mapAddModal.itemName" id="mapAddModal.itemName.input">
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="mapAddModal.itemIcon">Item's Icon:</span>
+          </div>
+          <select class="form-select" id="mapAddModal.itemIcon.input">
+
+            <!-- This list is built client side -->
+
+          </select>
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="mapAddModal.itemType">Item's Type:</span>
+          </div>
+          <select class="form-select" id="mapAddModal.itemType.input">
+
+            <!-- This list is built client side -->
+
+          </select>
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="mapAddModal.itemLat">Latitude:</span>
+          </div>
+          <input type="text" class="form-control" aria-label="itemLat" aria-describedBy="mapAddModal.itemLat" id="mapAddModal.itemLat.input">
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="mapAddModal.itemLng">Longitude:</span>
+          </div>
+          <input type="text" class="form-control" aria-label="itemLng" aria-describedby="mapAddModal.itemLng" id="mapAddModal.itemLng.input">
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" id="mapAddModal.Save">Save changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
