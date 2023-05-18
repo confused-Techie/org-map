@@ -1,15 +1,19 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+html, body, #map {
+  height: 95%;
+  width: 95vw;
+}
+
 #map {
-  height: 50rem;
-  width: 100rem;
-  right: auto;
-  left: auto;
-  display: flex;
-  margin-left: 2rem;
-  margin-top: 2rem;
+  margin-left: 3rem;
 }
 
 .card {
-  width: 100rem;
+  width: 95vw;
+  margin-left: 3rem;
   margin-top: 2rem;
-  margin-left: 2rem;
 }

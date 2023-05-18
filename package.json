@@ -1,15 +1,20 @@
 {
   "name": "org-map",
   "version": "1.0.0",
-  "description": "",
+  "description": "Easily organize and view the IT infrastructure in your organization.",
   "main": "./src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/server.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "feathericons",
+    "leaflet",
+    "map"
+  ],
+  "author": "confused-Techie",
   "license": "MIT",
+  "repository": "https://github.com/confused-Techie/org-map",
   "dependencies": {
     "ejs": "^3.1.9",
     "express": "^4.18.2",

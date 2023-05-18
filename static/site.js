@@ -11,7 +11,8 @@ window.onload = (event) => {
     fullscreenControl: {
       pseudoFullscreen: true
     },
-    crs: L.CRS.Simple
+    crs: L.CRS.Simple,
+    doubleClickZoom: false
   });
 
   let bounds = [[0, 0], [1000, 1000]];
@@ -38,6 +39,15 @@ window.onload = (event) => {
 
   document.getElementById("mapFilter.camera.input").addEventListener("change", mapFilterFunc);
   document.getElementById("mapFilter.ap.input").addEventListener("change", mapFilterFunc);
+  document.getElementById("mapFilter.mdf.input").addEventListener("change", mapFilterFunc);
+  document.getElementById("mapFilter.idf.input").addEventListener("change", mapFilterFunc);
+  document.getElementById("mapFilter.security.input").addEventListener("change", mapFilterFunc);
+  document.getElementById("mapFilter.phone.input").addEventListener("change", mapFilterFunc);
+  document.getElementById("mapFilter.printer.input").addEventListener("change", mapFilterFunc);
+  document.getElementById("mapFilter.speaker.input").addEventListener("change", mapFilterFunc);
+  document.getElementById("mapFilter.temperature.input").addEventListener("change", mapFilterFunc);
+  document.getElementById("mapFilter.tv.input").addEventListener("change", mapFilterFunc);
+  document.getElementById("mapFilter.ip-speaker.input").addEventListener("change", mapFilterFunc);
 };
 
 function addDevicesToDOM() {
@@ -151,6 +161,33 @@ function mapFilterFunc(event) {
       break;
     case "mapFilter.ap.input":
       deviceClass = "access_points";
+      break;
+    case "mapFilter.mdf.input":
+      deviceClass = "mdf";
+      break;
+    case "mapFilter.idf.input":
+      deviceClass = "idf";
+      break;
+    case "mapFilter.security.input":
+      deviceClass = "security";
+      break;
+    case "mapFilter.phone.input":
+      deviceClass = "phone";
+      break;
+    case "mapFilter.printer.input":
+      deviceClass = "printer";
+      break;
+    case "mapFilter.speaker.input":
+      deviceClass = "speaker";
+      break;
+    case "mapFilter.temperature.input":
+      deviceClass = "temperature";
+      break;
+    case "mapFilter.tv.input":
+      deviceClass = "tv";
+      break;
+    case "mapFilter.ip-speaker.input":
+      deviceClass = "ip-speaker";
       break;
     default:
       deviceClass = "";
@@ -347,4 +384,8 @@ function generateToast(title, text, id) {
         reject(false);
       });
   });
+}
+
+function changeTheme(theme) {
+  document.documentElement.dataset.bsTheme = theme;
 }
