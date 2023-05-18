@@ -1,4 +1,5 @@
-const supportedDevices = require("./supported_devices.js");
+const supportedDeviceClasses = require("./supported_device_classes.js");
+const supportedIcons = require("./supported_icons.js");
 const path = require("path");
 const express = require("express");
 const ejs = require("ejs");
@@ -23,13 +24,18 @@ app.get("/", (req, res) => {
   res.render("home", {
     page: {
       title: config.title
-    }
+    },
+    deviceClasses: supportedDeviceClasses
   });
 
 });
 
-app.get("/supported_devices", (req, res) => {
-  res.status(200).json(supportedDevices);
+app.get("/supported_device_classes", (req, res) => {
+  res.status(200).json(supportedDeviceClasses);
+});
+
+app.get("/supported_icons", (req, res) => {
+  res.status(200).json(supportedIcons);
 });
 
 app.get("/default_map", (req, res) => {

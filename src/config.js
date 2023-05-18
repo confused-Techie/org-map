@@ -3,7 +3,7 @@ const fs = require("fs");
 
 function readConfig() {
   try {
-    const doc = yaml.load(fs.readFileSync("./app.yaml", "utf8"));
+    const doc = yaml.load(fs.readFileSync("./data/app.yaml", "utf8"));
     return doc;
   } catch(err) {
     console.log(err);

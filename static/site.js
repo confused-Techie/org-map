@@ -1,9 +1,12 @@
 let MAP; // Keeps our in memory instance of the map for this session
 import COLLECTION from "./collection" assert { type: "json" };
 // ^^ Tracks our custom objects to the map between sessions, saved server side
-import DEVICES from "./supported_devices" assert { type: "json" };
-// ^^ supplied server side, accounts for all supported devices
+import DEVICE_CLASSES from "./supported_device_classes" assert { type: "json" };
+// ^^ informs of all supported classes
+import ICONS from "./supported_icons" assert { type: "json" };
+// ^^ informs of all supported icons
 let mapAddModal = new bootstrap.Modal("#mapAddModal");
+let itemDeleteModal = new bootstrap.Modal("#itemDeleteModal");
 
 window.onload = (event) => {
 
@@ -21,11 +24,11 @@ window.onload = (event) => {
 
   MAP.fitBounds(bounds);
 
-  for (let i = 0; i < DEVICES.length; i++) {
-    DEVICES[i].icon = L.icon({
-      iconUrl: DEVICES[i].iconUrl,
-      iconSize: DEVICES[i].iconSize,
-      iconAnchor: DEVICES[i].iconAnchor
+  for (let i = 0; i < ICONS.length; i++) {
+    ICONS[i].icon = L.icon({
+      iconUrl: ICONS[i].iconUrl,
+      iconSize: ICONS[i].iconSize,
+      iconAnchor: ICONS[i].iconAnchor
     });
   }
 
@@ -37,17 +40,10 @@ window.onload = (event) => {
 
   MAP.addEventListener("dblclick", mapDoubleClick);
 
-  document.getElementById("mapFilter.camera.input").addEventListener("change", mapFilterFunc);
-  document.getElementById("mapFilter.ap.input").addEventListener("change", mapFilterFunc);
-  document.getElementById("mapFilter.mdf.input").addEventListener("change", mapFilterFunc);
-  document.getElementById("mapFilter.idf.input").addEventListener("change", mapFilterFunc);
-  document.getElementById("mapFilter.security.input").addEventListener("change", mapFilterFunc);
-  document.getElementById("mapFilter.phone.input").addEventListener("change", mapFilterFunc);
-  document.getElementById("mapFilter.printer.input").addEventListener("change", mapFilterFunc);
-  document.getElementById("mapFilter.speaker.input").addEventListener("change", mapFilterFunc);
-  document.getElementById("mapFilter.temperature.input").addEventListener("change", mapFilterFunc);
-  document.getElementById("mapFilter.tv.input").addEventListener("change", mapFilterFunc);
-  document.getElementById("mapFilter.ip-speaker.input").addEventListener("change", mapFilterFunc);
+  for (let i = 0; i < DEVICE_CLASSES.length; i++) {
+    document.getElementById(`mapFilter.${DEVICE_CLASSES[i].name}.input`)
+      .addEventListener("change", mapFilterFunc);
+  }
 };
 
 function addDevicesToDOM() {
@@ -65,16 +61,18 @@ function addDevicesToDOM() {
   default_itemIcon.selected = true;
   itemIcon.add(default_itemIcon);
 
-  for (let i = 0; i < DEVICES.length; i++) {
-    let el_itemType = document.createElement("option");
-    el_itemType.text = DEVICES[i].type;
-    el_itemType.value = DEVICES[i].type;
-    itemType.add(el_itemType);
-
+  for (let i = 0; i < ICONS.length; i++) {
     let el_itemIcon = document.createElement("option");
-    el_itemIcon.text = DEVICES[i].iconName;
-    el_itemIcon.value = DEVICES[i].iconName;
+    el_itemIcon.text = ICONS[i].iconName;
+    el_itemIcon.value = ICONS[i].iconName;
     itemIcon.add(el_itemIcon);
+  }
+
+  for (let i = 0; i < DEVICE_CLASSES.length; i++) {
+    let el_itemType = document.createElement("option");
+    el_itemType.text = DEVICE_CLASSES[i].name;
+    el_itemType.value = DEVICE_CLASSES[i].name;
+    itemType.add(el_itemType);
   }
 }
 
@@ -85,6 +83,9 @@ function addDevicesToMAP() {
         icon: findIconPointer(item.icon),
         title: item.name
       }).addTo(MAP);
+
+      item.instance.addEventListener("contextmenu", markerRightClick);
+      item.instance.addEventListener("dblclick", markerDoubleClick);
     }
   }
 }
@@ -119,6 +120,7 @@ function mapDoubleClick(event) {
     }).addTo(MAP);
 
     item.instance.addEventListener("contextmenu", markerRightClick);
+    item.instance.addEventListener("dblclick", markerDoubleClick);
 
     // Now to save data to our local object
     if (!COLLECTION[item.type]) {
@@ -153,46 +155,7 @@ function mapDoubleClick(event) {
 function mapFilterFunc(event) {
 
   let isChecked = event.srcElement.checked;
-  let deviceClass;
-  // TODO Hopefully make this dynamic somehow
-  switch(event.srcElement.id) {
-    case "mapFilter.camera.input":
-      deviceClass = "cameras";
-      break;
-    case "mapFilter.ap.input":
-      deviceClass = "access_points";
-      break;
-    case "mapFilter.mdf.input":
-      deviceClass = "mdf";
-      break;
-    case "mapFilter.idf.input":
-      deviceClass = "idf";
-      break;
-    case "mapFilter.security.input":
-      deviceClass = "security";
-      break;
-    case "mapFilter.phone.input":
-      deviceClass = "phone";
-      break;
-    case "mapFilter.printer.input":
-      deviceClass = "printer";
-      break;
-    case "mapFilter.speaker.input":
-      deviceClass = "speaker";
-      break;
-    case "mapFilter.temperature.input":
-      deviceClass = "temperature";
-      break;
-    case "mapFilter.tv.input":
-      deviceClass = "tv";
-      break;
-    case "mapFilter.ip-speaker.input":
-      deviceClass = "ip-speaker";
-      break;
-    default:
-      deviceClass = "";
-      break;
-  }
+  let deviceClass = event.srcElement.id.replace(".input", "").replace("mapFilter.", "");
 
   if (deviceClass.length > 1 && isChecked && COLLECTION[deviceClass]?.length > 0) {
 
@@ -204,6 +167,7 @@ function mapFilterFunc(event) {
       }).addTo(MAP);
 
       item.instance.addEventListener("contextmenu", markerRightClick);
+      item.instance.addEventListener("dblclick", markerDoubleClick);
     }
 
   } else if (deviceClass.length > 1 && !isChecked && COLLECTION[deviceClass]?.length > 0) {
@@ -214,6 +178,50 @@ function mapFilterFunc(event) {
       }
     }
   }
+}
+
+function markerDoubleClick(event) {
+  // This function handles the event when an existing icon
+  // is double clicked. This will open up a modal confirming deletion of the item.
+  let item = findItemByLatLng(event.latlng.lat, event.latlng.lng);
+  itemDeleteModal.show();
+
+  document.getElementById("itemDeleteModal.Delete").addEventListener("click", (innerEvent) => {
+    item.instance.remove();
+
+    innerEvent.preventDefault();
+
+    itemDeleteModal.hide();
+
+    let index = findItemIndexByLatLng(item.lat, item.lng);
+
+    if (index === -1) {
+      console.error("Couldn't find item for deletion.");
+      return;
+    }
+
+    COLLECTION[index.class].splice(index.index, 1);
+
+    // Now we want to save our modified collection
+    saveCollectionPromise()
+      .then((res) => {
+        generateToast("Saved", "Map Successfully Saved", `toastMapSaved_${Math.random()}`)
+          .then((toast) => {
+            // Res is now an instance of a toast
+            toast.show();
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      })
+      .catch((err) => {
+        console.error(err);
+        generateToast("Error", "Failed to Save Map!", `toastMapFail_${Math.random()}`)
+          .then((toast) => { toast.show(); })
+          .catch((error) => { console.error(error); });
+      });
+
+  }, {once: true});
 }
 
 function markerRightClick(event) {
@@ -269,6 +277,7 @@ function markerRightClick(event) {
       });
 
     item.instance.addEventListener("contextmenu", markerRightClick);
+    item.instance.addEventListener("dblclick", markerDoubleClick);
 
   }, {once:true});
 }
@@ -278,13 +287,18 @@ function findIconPointer(icon) {
     return null;
   }
 
-  for(let i = 0; i < DEVICES.length; i++) {
-    if (DEVICES[i].iconName === icon) {
-      return DEVICES[i].icon;
+  for(let i = 0; i < ICONS.length; i++) {
+    if (ICONS[i].iconName === icon) {
+      return ICONS[i].icon;
     }
   }
 
-  return null;
+  // If we failed to find an icon, lets return the default one
+  return L.icon({
+    iconUrl: "assets/octagon.svg",
+    iconSize: [24, 24],
+    iconAnchor: [12, 12]
+  });
 }
 
 function findItemByLatLng(lat, lng) {
@@ -292,6 +306,24 @@ function findItemByLatLng(lat, lng) {
     for (const item of COLLECTION[type]) {
       if (parseFloat(item.lat) === lat && parseFloat(item.lng) === lng) {
         return item;
+      }
+    }
+  }
+
+  return -1;
+}
+
+function findItemIndexByLatLng(lat, lng) {
+  for (const type in COLLECTION) {
+    for (let i = 0; i < COLLECTION[type].length; i++) {
+      if (
+        parseFloat(COLLECTION[type][i].lat) === parseFloat(lat) &&
+        parseFloat(COLLECTION[type][i].lng) === parseFloat(lng)
+      ) {
+        return {
+          class: type,
+          index: i
+        };
       }
     }
   }

@@ -1,6 +1,6 @@
 {
   "name": "org-map",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easily organize and view the IT infrastructure in your organization.",
   "main": "./src/server.js",
   "scripts": {
