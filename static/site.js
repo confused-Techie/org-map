@@ -84,6 +84,7 @@ function addDevicesToMAP() {
         title: item.name
       }).addTo(MAP);
 
+      item.instance.bindPopup(generatePopup(item));
       item.instance.addEventListener("contextmenu", markerRightClick);
       item.instance.addEventListener("dblclick", markerDoubleClick);
     }
@@ -106,7 +107,8 @@ function mapDoubleClick(event) {
       lng: document.getElementById("mapAddModal.itemLng.input").value,
       icon: document.getElementById("mapAddModal.itemIcon.input").value,
       name: document.getElementById("mapAddModal.itemName.input").value,
-      type: document.getElementById("mapAddModal.itemType.input").value
+      type: document.getElementById("mapAddModal.itemType.input").value,
+      note: document.getElementById("mapAddModal.itemText.input").value
     };
 
     innerEvent.preventDefault();
@@ -119,6 +121,7 @@ function mapDoubleClick(event) {
       title: item.name
     }).addTo(MAP);
 
+    item.instance.bindPopup(generatePopup(item));
     item.instance.addEventListener("contextmenu", markerRightClick);
     item.instance.addEventListener("dblclick", markerDoubleClick);
 
@@ -166,6 +169,7 @@ function mapFilterFunc(event) {
         title: item.name
       }).addTo(MAP);
 
+      item.instance.bindPopup(generatePopup(item));
       item.instance.addEventListener("contextmenu", markerRightClick);
       item.instance.addEventListener("dblclick", markerDoubleClick);
     }
@@ -235,6 +239,7 @@ function markerRightClick(event) {
   document.getElementById("mapAddModal.itemIcon.input").value = item.icon;
   document.getElementById("mapAddModal.itemName.input").value = item.name;
   document.getElementById("mapAddModal.itemType.input").value = item.type;
+  document.getElementById("mapAddModal.itemText.input").value = item.note;
   mapAddModal.show();
 
   document.getElementById("mapAddModal.Form").addEventListener("submit", (innerEvent) => {
@@ -245,13 +250,24 @@ function markerRightClick(event) {
       lng: document.getElementById("mapAddModal.itemLng.input").value,
       icon: document.getElementById("mapAddModal.itemIcon.input").value,
       name: document.getElementById("mapAddModal.itemName.input").value,
-      type: document.getElementById("mapAddModal.itemType.input").value
+      type: document.getElementById("mapAddModal.itemType.input").value,
+      note: document.getElementById("mapAddModal.itemText.input").value
     };
 
     innerEvent.preventDefault();
 
     cleanupDOMmapAddModal();
     mapAddModal.hide();
+
+    let index = findItemIndexByLatLng(item.lat, item.lng);
+
+    if (index !== -1) {
+
+      COLLECTION[index.class].splice(index.index, 1, item);
+
+    } else {
+      console.log("Couldn't find item index for edit");
+    }
 
     item.instance = L.marker([item.lat, item.lng], {
       icon: findIconPointer(item.icon),
@@ -276,6 +292,7 @@ function markerRightClick(event) {
           .catch((error) => { console.error(error); });
       });
 
+    item.instance.bindPopup(generatePopup(item));
     item.instance.addEventListener("contextmenu", markerRightClick);
     item.instance.addEventListener("dblclick", markerDoubleClick);
 
@@ -337,6 +354,7 @@ function cleanupDOMmapAddModal() {
   document.getElementById("mapAddModal.itemName.input").value = "";
   document.getElementById("mapAddModal.itemIcon.input").value = "Choose...";
   document.getElementById("mapAddModal.itemType.input").value = "Choose...";
+  document.getElementById("mapAddModal.itemText.input").value = "";
   return;
 }
 
@@ -372,11 +390,15 @@ function cleanCollection() {
         lng: item.lng,
         icon: item.icon,
         name: item.name,
-        type: item.type
+        type: item.type,
+        note: item.note
         // purposefully don't copy instance
       });
     }
   }
+  console.log("cleanCollection");
+  console.log(out);
+  console.log(COLLECTION);
   return out;
 }
 
@@ -416,6 +438,24 @@ function generateToast(title, text, id) {
         reject(false);
       });
   });
+}
+
+function generatePopup(item) {
+  let output = "";
+
+  output += `
+    <div class="card" style="width: 301px;">
+      <div class="card-body">
+        <h5 class="card-title">${item.name}</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">${item.type}</h6>
+        <p class="card-text">
+          ${window.markdownit().render(item.note)}
+        </p>
+      </div>
+    </div>
+  `;
+
+  return output;
 }
 
 function changeTheme(theme) {

@@ -17,3 +17,23 @@ html, body, #map {
   margin-left: 3rem;
   margin-top: 2rem;
 }
+
+/* Override default Popup styling */
+.leaflet-popup {
+  text-align: unset !important;
+}
+.leaflet-popup-content-wrapper {
+  padding: unset !important;
+  text-align: unset !important;
+  border-radius: unset !important;
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background: unset !important;
+  color: unset !important;
+  box-shadow: unset !important;
+}
+
+.leaflet-popup-close-button {
+  opacity: 0 !important;
+}
