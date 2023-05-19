@@ -44,6 +44,7 @@ window.onload = (event) => {
     document.getElementById(`mapFilter.${DEVICE_CLASSES[i].name}.input`)
       .addEventListener("change", mapFilterFunc);
   }
+  document.getElementById("mapFilter.all.input").addEventListener("change", mapFilterFunc);
 };
 
 function addDevicesToDOM() {
@@ -159,6 +160,35 @@ function mapFilterFunc(event) {
 
   let isChecked = event.srcElement.checked;
   let deviceClass = event.srcElement.id.replace(".input", "").replace("mapFilter.", "");
+
+  if (deviceClass === "all") {
+    if (isChecked) {
+      // we want to show ALL devices
+      for (const type in COLLECTION) {
+        for (const item of COLLECTION[type]) {
+          item.instance = L.marker([item.lat, item.lng], {
+            icon: findIconPointer(item.icon),
+            title: item.name
+          }).addTo(MAP);
+
+          item.instance.bindPopup(generatePopup(item));
+          item.instance.addEventListener("contextmenu", markerRightClick);
+          item.instance.addEventListener("dblclick", markerDoubleClick);
+        }
+      }
+    } else {
+      // we want to hide ALL devices
+      for (const type in COLLECTION) {
+        for (const item of COLLECTION[type]) {
+          if (item.instance) {
+            item.instance.remove();
+          }
+        }
+      }
+    }
+
+    return;
+  }
 
   if (deviceClass.length > 1 && isChecked && COLLECTION[deviceClass]?.length > 0) {
 

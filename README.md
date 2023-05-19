@@ -50,6 +50,7 @@ There's also a few more fields on this modal that are good to fill out:
   * Item's Name: This is the name of the item, something like `CAM_01` or whatever helps you to identify this device.
   * Item's Icon: This is a list of all available icons that can be used.
   * Item's Type: This is the classification of the device type. Usually this will match the Icon.
+  * Item's Notes: This is a free form field where you can type any valid markdown, to include additional notes such as MAC address, IP, or even links.
 
 ### Editing Devices
 

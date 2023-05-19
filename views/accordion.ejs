@@ -1,0 +1,32 @@
+<div class="accordion" id="guideAccordion">
+  <div class="accordion-item">
+    <h3 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordionFilterSection" aria-expanded="true" aria-controls="accordionFilterSection">
+        Filters
+      </button>
+    </h3>
+    <div id="accordionFilterSection" class="accordion-collapse collapse show" data-bs-parent="#guideAccordion">
+      <div class="accordion-body">
+
+        <%-include('map-filter');%>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <h3 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordionGuideSection" aria-expanded="true" aria-controls="accordionGuideSection">
+        Usage Guide
+      </button>
+    </h3>
+    <div id="accordionGuideSection" class="accordion-collapse collapse" data-bs-parent="#guideAccordion">
+      <div class="accordion-body">
+
+        <%-include('guide');%>
+
+      </div>
+    </div>
+  </div>
+
+</div>
