@@ -45,6 +45,19 @@ window.onload = (event) => {
       .addEventListener("change", mapFilterFunc);
   }
   document.getElementById("mapFilter.all.input").addEventListener("change", mapFilterFunc);
+
+  // Add some page event listeners
+  document.getElementById("radioThemeDark").addEventListener("change", (event) => {
+    if (event.srcElement.checked) {
+      changeTheme("dark");
+    }
+  });
+  document.getElementById("radioThemeLight").addEventListener("change", (event) => {
+    if (event.srcElement.checked) {
+      changeTheme("light");
+    }
+  });
+
 };
 
 function addDevicesToDOM() {
