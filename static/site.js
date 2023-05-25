@@ -93,14 +93,7 @@ function addDevicesToDOM() {
 function addDevicesToMAP() {
   for (const type in COLLECTION) {
     for (const item of COLLECTION[type]) {
-      item.instance = L.marker([item.lat, item.lng], {
-        icon: findIconPointer(item.icon),
-        title: item.name
-      }).addTo(MAP);
-
-      item.instance.bindPopup(generatePopup(item));
-      item.instance.addEventListener("contextmenu", markerRightClick);
-      item.instance.addEventListener("dblclick", markerDoubleClick);
+      displayItem(item);
     }
   }
 }
@@ -130,14 +123,7 @@ function mapDoubleClick(event) {
     cleanupDOMmapAddModal();
     mapAddModal.hide();
 
-    item.instance = L.marker([item.lat, item.lng], {
-      icon: findIconPointer(item.icon),
-      title: item.name
-    }).addTo(MAP);
-
-    item.instance.bindPopup(generatePopup(item));
-    item.instance.addEventListener("contextmenu", markerRightClick);
-    item.instance.addEventListener("dblclick", markerDoubleClick);
+    displayItem(item);
 
     // Now to save data to our local object
     if (!COLLECTION[item.type]) {
@@ -179,14 +165,7 @@ function mapFilterFunc(event) {
       // we want to show ALL devices
       for (const type in COLLECTION) {
         for (const item of COLLECTION[type]) {
-          item.instance = L.marker([item.lat, item.lng], {
-            icon: findIconPointer(item.icon),
-            title: item.name
-          }).addTo(MAP);
-
-          item.instance.bindPopup(generatePopup(item));
-          item.instance.addEventListener("contextmenu", markerRightClick);
-          item.instance.addEventListener("dblclick", markerDoubleClick);
+          displayItem(item);
         }
       }
     } else {
@@ -207,14 +186,8 @@ function mapFilterFunc(event) {
 
     for (let i = 0; i < COLLECTION[deviceClass].length; i++) {
       let item = COLLECTION[deviceClass][i];
-      item.instance = L.marker([item.lat, item.lng], {
-        icon: findIconPointer(item.icon),
-        title: item.name
-      }).addTo(MAP);
 
-      item.instance.bindPopup(generatePopup(item));
-      item.instance.addEventListener("contextmenu", markerRightClick);
-      item.instance.addEventListener("dblclick", markerDoubleClick);
+      displayItem(item);
     }
 
   } else if (deviceClass.length > 1 && !isChecked && COLLECTION[deviceClass]?.length > 0) {
@@ -312,10 +285,7 @@ function markerRightClick(event) {
       console.log("Couldn't find item index for edit");
     }
 
-    item.instance = L.marker([item.lat, item.lng], {
-      icon: findIconPointer(item.icon),
-      title: item.name
-    }).addTo(MAP);
+    displayItem(item);
 
     saveCollectionPromise()
       .then((res) => {
@@ -334,10 +304,6 @@ function markerRightClick(event) {
           .then((toast) => { toast.show(); })
           .catch((error) => { console.error(error); });
       });
-
-    item.instance.bindPopup(generatePopup(item));
-    item.instance.addEventListener("contextmenu", markerRightClick);
-    item.instance.addEventListener("dblclick", markerDoubleClick);
 
   }, {once:true});
 }
@@ -492,7 +458,7 @@ function generatePopup(item) {
         <h5 class="card-title">${item.name}</h5>
         <h6 class="card-subtitle mb-2 text-body-secondary">${item.type}</h6>
         <p class="card-text">
-          ${window.markdownit().render(item.note)}
+          ${typeof item.note === "string" ? window.markdownit().render(item.note) : ""}
         </p>
       </div>
     </div>
@@ -503,4 +469,30 @@ function generatePopup(item) {
 
 function changeTheme(theme) {
   document.documentElement.dataset.bsTheme = theme;
+}
+
+function displayItem(item) {
+
+  switch(item.type) {
+    case "label": {
+      item.instance = L.marker([item.lat, item.lng], {
+        icon: new L.DivIcon({
+          className: "labelIcon",
+          html: `<span class="labelIconText">${item.name}</span>`
+        })
+      }).addTo(MAP);
+      break;
+    }
+    default: {
+      item.instance = L.marker([item.lat, item.lng], {
+        icon: findIconPointer(item.icon),
+        title: item.name
+      }).addTo(MAP);
+      break;
+    }
+  }
+
+  item.instance.bindPopup(generatePopup(item));
+  item.instance.addEventListener("contextmenu", markerRightClick);
+  item.instance.addEventListener("dblclick", markerDoubleClick);
 }

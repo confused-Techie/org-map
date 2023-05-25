@@ -42,5 +42,13 @@ module.exports = [
   {
     name: "ip-speaker",
     filter: "Show IP Speakers"
+  },
+  {
+    name: "label",
+    filter: "Show Labels"
+  },
+  {
+    name: "signage",
+    filter: "Show Signage"
   }
 ];

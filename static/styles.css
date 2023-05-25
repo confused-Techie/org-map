@@ -37,3 +37,12 @@ html, body, #map {
 .leaflet-popup-close-button {
   opacity: 0 !important;
 }
+
+.labelIcon {
+
+}
+
+.labelIconText {
+  font-size: large;
+  color: black;
+}
