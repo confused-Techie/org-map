@@ -48,6 +48,10 @@ module.exports = [
     filter: "Show Labels"
   },
   {
+    name: "siteLabel",
+    filter: "Show Site Labels"
+  },
+  {
     name: "signage",
     filter: "Show Signage"
   }

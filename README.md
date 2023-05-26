@@ -81,6 +81,12 @@ The following is a list of all supported device classes:
   * tv
   * ip-speaker
 
+The following list covers other item classes that can be used on the map:
+
+  * label: Can be used where the Item's Name becomes a text label on the map.
+  * siteLabel: Can be used where the Item's Name becomes a text label on the map, onl if zoomed out nearly all the way.
+  * signage: Can be used to attach any number of the following icon's to indicate parking lots, restrooms, etc.
+
 The following is a list of all supported icons:
 
   * video ![video](./static/assets/video.svg)

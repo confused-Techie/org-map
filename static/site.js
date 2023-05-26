@@ -58,6 +58,10 @@ window.onload = (event) => {
     }
   });
 
+  // Setup listening to zoom events
+  MAP.on("zoomend", () => {
+    redrawItems();
+  });
 };
 
 function addDevicesToDOM() {
@@ -173,7 +177,7 @@ function mapFilterFunc(event) {
       for (const type in COLLECTION) {
         for (const item of COLLECTION[type]) {
           if (item.instance) {
-            item.instance.remove();
+            removeItem(item);
           }
         }
       }
@@ -194,7 +198,7 @@ function mapFilterFunc(event) {
     for (let i = 0; i < COLLECTION[deviceClass].length; i++) {
       let item = COLLECTION[deviceClass][i];
       if (item.instance) {
-        item.instance.remove();
+        removeItem(item);
       }
     }
   }
@@ -207,7 +211,7 @@ function markerDoubleClick(event) {
   itemDeleteModal.show();
 
   document.getElementById("itemDeleteModal.Delete").addEventListener("click", (innerEvent) => {
-    item.instance.remove();
+    removeItem(item);
 
     innerEvent.preventDefault();
 
@@ -259,7 +263,7 @@ function markerRightClick(event) {
   mapAddModal.show();
 
   document.getElementById("mapAddModal.Form").addEventListener("submit", (innerEvent) => {
-    item.instance.remove();
+    removeItem(item);
 
     item = {
       lat: document.getElementById("mapAddModal.itemLat.input").value,
@@ -405,9 +409,7 @@ function cleanCollection() {
       });
     }
   }
-  console.log("cleanCollection");
-  console.log(out);
-  console.log(COLLECTION);
+
   return out;
 }
 
@@ -471,16 +473,56 @@ function changeTheme(theme) {
   document.documentElement.dataset.bsTheme = theme;
 }
 
+function redrawItems() {
+  for (const type in COLLECTION) {
+    for (let i = 0; i < COLLECTION[type].length; i++) {
+      let item = COLLECTION[type][i];
+
+      if (typeof item.instance === "object") {
+        removeItem(item);
+      }
+
+      // Then draw again
+      displayItem(COLLECTION[type][i]);
+    }
+  }
+}
+
+function removeItem(item) {
+  item.instance.removeEventListener("contextmenu", markerRightClick);
+  item.instance.removeEventListener("dblclick", markerDoubleClick);
+  item.instance.remove();
+}
+
 function displayItem(item) {
+  let handlers = false;
+  let currentZoom = MAP.getZoom();
 
   switch(item.type) {
+    case "siteLabel": {
+      if (currentZoom <= 1) {
+        item.instance = L.marker([item.lat, item.lng], {
+          icon: new L.DivIcon({
+            className: "siteLabelIcon",
+            html: `<span class="siteLabelIconText">${item.name}</span>`
+          })
+        }).addTo(MAP);
+
+        handlers = true;
+      }
+      break;
+    }
     case "label": {
-      item.instance = L.marker([item.lat, item.lng], {
-        icon: new L.DivIcon({
-          className: "labelIcon",
-          html: `<span class="labelIconText">${item.name}</span>`
-        })
-      }).addTo(MAP);
+      if (currentZoom >= 3) {
+        item.instance = L.marker([item.lat, item.lng], {
+          icon: new L.DivIcon({
+            className: "labelIcon",
+            html: `<span class="labelIconText">${item.name}</span>`
+          })
+        }).addTo(MAP);
+
+        handlers = true;
+      }
       break;
     }
     default: {
@@ -488,11 +530,15 @@ function displayItem(item) {
         icon: findIconPointer(item.icon),
         title: item.name
       }).addTo(MAP);
+
+      handlers = true;
       break;
     }
   }
 
-  item.instance.bindPopup(generatePopup(item));
-  item.instance.addEventListener("contextmenu", markerRightClick);
-  item.instance.addEventListener("dblclick", markerDoubleClick);
+  if (handlers) {
+    item.instance.bindPopup(generatePopup(item));
+    item.instance.addEventListener("contextmenu", markerRightClick);
+    item.instance.addEventListener("dblclick", markerDoubleClick);
+  }
 }

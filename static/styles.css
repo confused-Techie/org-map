@@ -46,3 +46,8 @@ html, body, #map {
   font-size: large;
   color: black;
 }
+
+.siteLabelIconText {
+  font-size: x-large;
+  color: black;
+}
