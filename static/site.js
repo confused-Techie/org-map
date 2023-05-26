@@ -526,12 +526,18 @@ function displayItem(item) {
       break;
     }
     default: {
-      item.instance = L.marker([item.lat, item.lng], {
-        icon: findIconPointer(item.icon),
-        title: item.name
-      }).addTo(MAP);
+      // TODO Impelement cluster loading of icons here
+      // So that at higher zoom levels icons become badges with numbers.
+      // The hard part is this function only has access to it's self, and no easy
+      // way to interact with neighbors besides determing them each run.
+      if (currentZoom >= 3) {
+        item.instance = L.marker([item.lat, item.lng], {
+          icon: findIconPointer(item.icon),
+          title: item.name
+        }).addTo(MAP);
 
-      handlers = true;
+        handlers = true;
+      }
       break;
     }
   }
