@@ -24,7 +24,8 @@ app.get("/", (req, res) => {
     page: {
       title: config.title
     },
-    deviceClasses: mixedData.getDevices()
+    deviceClasses: mixedData.getDevices(),
+    customCSS: config.customCSS
   });
 
 });
@@ -39,6 +40,14 @@ app.get("/supported_icons", (req, res) => {
 
 app.get("/default_map", (req, res) => {
   res.status(200).sendFile(path.resolve(`./data/${config.map}`));
+});
+
+app.get("/user_styles.css", (req, res) => {
+  if (typeof config.customCSS === "string") {
+    res.status(200).sendFile(path.resolve(`./data/${config.customCSS}`));
+  } else {
+    res.status(404).json({message:"Not Found"});
+  }
 });
 
 app.get("/collection", (req, res) => {

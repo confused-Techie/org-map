@@ -19,7 +19,8 @@ function getConfig() {
     title: data.TITLE ?? "Org Map",
     map: data.MAP ?? "",
     customDevices: data.CUSTOM_DEVICES ?? [],
-    customIcons: data.CUSTOM_ICONS ?? []
+    customIcons: data.CUSTOM_ICONS ?? [],
+    customCSS: data.CUSTOM_CSS ?? false,
   };
 }
 

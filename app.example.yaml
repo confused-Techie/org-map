@@ -1,3 +1,26 @@
 PORT: 8080 # The 'PORT' key shouldn't be used at all if using Docker
 TITLE: "My Map"
 MAP: "my_map.svg"
+# Custom Devices can either be an object directly within the YAML or
+# can otherwise simply point to a file.
+CUSTOM_DEVICES: "custom-devices.json"
+# Or if you'd rather include an object:
+CUSTOM_DEVICES:
+- name: Custom Device 01
+  filter: Text for the filter pane for this item.
+- name: Custom Device 02
+  filter: Text again for this item.
+
+# Then Custom Icons are exactly the same
+#CUSTOM_ICONS: "custom-icons.json"
+CUSTOM_ICONS:
+- iconName: Name of the icon
+  icon:
+  iconUrl: Path to the icon
+  iconSize:
+  - 24
+  - 24
+  iconAnchor:
+  - 12
+  - 12
+CUSTOM_CSS: "Path to file containing custom css"

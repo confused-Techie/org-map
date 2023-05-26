@@ -23,6 +23,9 @@ Then your `LOCAL_PATH` should contain your `app.yaml` file, organization map, an
   * `PORT`: This is the port the Org Map Server will be exposed on.
   * `TITLE`: This is the title of your Website that will show up in the browser.
   * `MAP`: This is the filename of your custom organization's map.
+  * `CUSTOM_DEVICES`: Object, or path to file of custom device classes.
+  * `CUSTOM_ICONS`: Object, or path to file of custom icons.
+  * `CUSTOM_CSS`: Filename of a CSS file to optionally include in the final website.
 
 3. Now ensure both you `app.yaml` and your organization's map is located within the `data` folder.
 
