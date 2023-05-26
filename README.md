@@ -101,6 +101,56 @@ The following is a list of all supported icons:
   * tv ![tv](./static/assets/tv.svg)
   * volume ![volume](./static/assets/volume-2.svg)
 
+## Custom Devices / Icons
+
+By using either `CUSTOM_DEVICES` or `CUSTOM_ICONS` within your `app.yaml` file, you can define a set of custom devices/icons that will be included into the application.
+
+For both of these values they can either be built right in within the YAML file, or can point to a `JSON` file within the `data` directory.
+
+### Example Device Entry
+
+```json
+[
+  {
+    "name": "Name of the Custom Item. Best practice to not include spaces or special characters",
+    "filter": "Text that shows up withn the filter pane."
+  }
+]
+```
+
+```yaml
+CUSTOM_DEVICES:
+- name: Name of Custom Item
+  filter: Text for Filter Pane
+```
+
+### Example of Icon Entry
+
+```json
+[
+  {
+    "iconName": "Short name for the icon",
+    "icon": null,
+    "iconUrl": "Local path within data to this item.",
+    "iconSize": [24, 24],
+    "iconAnchor": [12, 12]
+  }
+]
+```
+
+```yaml
+CUSTOM_ICONS:
+- iconName: Short name for the icon
+  icon:
+  iconUrl: Local path within data to this item.
+  iconSize:
+  - 24
+  - 24
+  iconAnchor:
+  - 12
+  - 12
+```
+
 ## Attributes
 
 This project would not be possible without the fantastic following open source projects:

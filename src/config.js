@@ -17,7 +17,9 @@ function getConfig() {
   return {
     port: data.PORT ?? 8080,
     title: data.TITLE ?? "Org Map",
-    map: data.MAP ?? ""
+    map: data.MAP ?? "",
+    customDevices: data.CUSTOM_DEVICES ?? [],
+    customIcons: data.CUSTOM_ICONS ?? []
   };
 }
 

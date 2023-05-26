@@ -1,5 +1,4 @@
-const supportedDeviceClasses = require("./supported_device_classes.js");
-const supportedIcons = require("./supported_icons.js");
+const mixedData = require("./mixedData.js");
 const path = require("path");
 const express = require("express");
 const ejs = require("ejs");
@@ -25,21 +24,20 @@ app.get("/", (req, res) => {
     page: {
       title: config.title
     },
-    deviceClasses: supportedDeviceClasses
+    deviceClasses: mixedData.getDevices()
   });
 
 });
 
 app.get("/supported_device_classes", (req, res) => {
-  res.status(200).json(supportedDeviceClasses);
+  res.status(200).json(mixedData.getDevices());
 });
 
 app.get("/supported_icons", (req, res) => {
-  res.status(200).json(supportedIcons);
+  res.status(200).json(mixedData.getIcons());
 });
 
 app.get("/default_map", (req, res) => {
-  // todo: this can rely on config values to be set
   res.status(200).sendFile(path.resolve(`./data/${config.map}`));
 });
 

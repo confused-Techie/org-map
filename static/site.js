@@ -500,7 +500,7 @@ function displayItem(item) {
 
   switch(item.type) {
     case "siteLabel": {
-      if (currentZoom <= 1) {
+      if (currentZoom <= 2) {
         item.instance = L.marker([item.lat, item.lng], {
           icon: new L.DivIcon({
             className: "siteLabelIcon",
