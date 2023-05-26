@@ -3,11 +3,14 @@
     <h5 class="card-title">Theme</h5>
 
     <div class="btn-group" role="group" aria-label="Theme Group">
-      <input type="radio" class="btn-check" name="radioThemeGroup" id="radioThemeDark" autocomplete="off" checked>
+      <input type="radio" class="btn-check" name="radioThemeGroup" id="radioThemeDark" autocomplete="off" onchange="changeTheme('dark');" checked>
       <label class="btn btn-outline-primary" for="radioThemeDark">Dark</label>
 
-      <input type="radio" class="btn-check" name="radioThemeGroup" id="radioThemeLight" autocomplete="off">
+      <input type="radio" class="btn-check" name="radioThemeGroup" id="radioThemeLight" autocomplete="off" onchange="changeTheme('light');">
       <label class="btn btn-outline-primary" for="radioThemeLight">Light</label>
+
+      <input type="radio" class="btn-check" name="radioThemeGroup" id="radioThemeDracula" autocomplete="off" onchange="changeTheme('dracula');">
+      <label class="btn btn-outline-primary" for="radioThemeDracula">Dracula</label>
 
     </div>
 

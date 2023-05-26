@@ -46,18 +46,6 @@ window.onload = (event) => {
   }
   document.getElementById("mapFilter.all.input").addEventListener("change", mapFilterFunc);
 
-  // Add some page event listeners
-  document.getElementById("radioThemeDark").addEventListener("change", (event) => {
-    if (event.srcElement.checked) {
-      changeTheme("dark");
-    }
-  });
-  document.getElementById("radioThemeLight").addEventListener("change", (event) => {
-    if (event.srcElement.checked) {
-      changeTheme("light");
-    }
-  });
-
   // Setup listening to zoom events
   MAP.on("zoomend", () => {
     redrawItems();
@@ -472,6 +460,9 @@ function generatePopup(item) {
 function changeTheme(theme) {
   document.documentElement.dataset.bsTheme = theme;
 }
+
+window.changeTheme = changeTheme; // Since we have a 'module' functions are not
+// exposed globally automatically
 
 function redrawItems() {
   for (const type in COLLECTION) {
