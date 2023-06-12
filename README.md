@@ -9,7 +9,7 @@ Org Map aims to be the dead simple tool for IT administrators to achieve a clean
 TODO WIP::
 
 ```bash
-docker run -p YOUR_PORT:8080 --name CONTAINER_NAME -v LOCAL_PATH:/usr/src/app/data ghcr.io/confused-Techie/org-map:latest
+docker run -p YOUR_PORT:8080 --name CONTAINER_NAME -v LOCAL_PATH:/usr/src/app/data -d ghcr.io/confused-Techie/org-map:latest
 ```
 
 Then your `LOCAL_PATH` should contain your `app.yaml` file, organization map, and it will contain the `map.json` created automatically.
