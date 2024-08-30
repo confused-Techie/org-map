@@ -6,10 +6,17 @@ Org Map aims to be the dead simple tool for IT administrators to achieve a clean
 
 ## Setup Docker
 
-TODO WIP::
+Example commands to create instance:
 
 ```bash
-docker run -p YOUR_PORT:8080 --name CONTAINER_NAME -v LOCAL_PATH:/usr/src/app/data -d ghcr.io/confused-Techie/org-map:latest
+> docker build -t org-map:1.0.2 .
+> docker tag org-map:1.0.2 ghcr.iio/confused-techie/org-map:1.0.2
+> docker push ghcr.io/confused-techie/org-map:1.0.2
+```
+
+```bash
+> docker run -p YOUR_PORT:8080 --name CONTAINER_NAME -v LOCAL_PATH:/usr/src/app/data -d ghcr.io/confused-Techie/org-map:latest
+> sudo docker run -p 9090:8080 --name Org-Map -v /home/dev_server/docker/org-map:/usr/src/app/data ghcr.io/confused-techie/org-map:1.0.2
 ```
 
 Then your `LOCAL_PATH` should contain your `app.yaml` file, organization map, and it will contain the `map.json` created automatically.
