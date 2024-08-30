@@ -1,9 +1,9 @@
 let MAP; // Keeps our in memory instance of the map for this session
-import COLLECTION from "./collection" assert { type: "json" };
+import COLLECTION from "./collection" with { type: "json" };
 // ^^ Tracks our custom objects to the map between sessions, saved server side
-import DEVICE_CLASSES from "./supported_device_classes" assert { type: "json" };
+import DEVICE_CLASSES from "./supported_device_classes" with { type: "json" };
 // ^^ informs of all supported classes
-import ICONS from "./supported_icons" assert { type: "json" };
+import ICONS from "./supported_icons" with { type: "json" };
 // ^^ informs of all supported icons
 let mapAddModal = new bootstrap.Modal("#mapAddModal");
 let itemDeleteModal = new bootstrap.Modal("#itemDeleteModal");
