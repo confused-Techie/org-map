@@ -76,7 +76,7 @@ If you every want to backup your map (as is good practice), as soon as you start
 
 ## Supported Devices / Icons
 
-As of `1.0.1` devices and the icons they use are now independent of each other. This means that you can use whatever icon you feel is best for your devices! But for the use of filtering there are still built in device classes.
+As of `1.0.4` devices and the icons they use are now independent of each other. This means that you can use whatever icon you feel is best for your devices! But for the use of filtering there are still built in device classes.
 
 The following is a list of all supported device classes:
 
@@ -94,7 +94,7 @@ The following is a list of all supported device classes:
 The following list covers other item classes that can be used on the map:
 
   * label: Can be used where the Item's Name becomes a text label on the map.
-  * siteLabel: Can be used where the Item's Name becomes a text label on the map, onl if zoomed out nearly all the way.
+  * siteLabel: Can be used where the Item's Name becomes a text label on the map, only if zoomed out nearly all the way.
   * signage: Can be used to attach any number of the following icon's to indicate parking lots, restrooms, etc.
 
 The following is a list of all supported icons:
@@ -110,6 +110,9 @@ The following is a list of all supported icons:
   * thermometer ![thermometer](./static/assets/thermometer.svg)
   * tv ![tv](./static/assets/tv.svg)
   * volume ![volume](./static/assets/volume-2.svg)
+  * user ![user](./static/assets/user.svg)
+  * users ![users](./static/assets/users.svg)
+  * bell ![bell](./static/assets/bell.svg)
 
 ## Custom Devices / Icons
 

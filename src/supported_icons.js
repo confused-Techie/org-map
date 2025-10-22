@@ -74,5 +74,23 @@ module.exports = [
     iconUrl: "assets/volume-2.svg",
     iconSize: [24, 24],
     iconAnchor: [12, 12]
+  },
+  {
+    iconName: "user",
+    iconUrl: "assets/user.svg",
+    iconSize: [24, 24],
+    iconAnchor: [12, 12]
+  },
+  {
+    iconName: "users",
+    iconUrl: "assets/users.svg",
+    iconSize: [24, 24],
+    iconAnchor: [12, 12]
+  },
+  {
+    iconName: "bell",
+    iconUrl: "assets/bell.svg",
+    iconSize: [24, 24],
+    iconAnchor: [12, 12]
   }
 ];
